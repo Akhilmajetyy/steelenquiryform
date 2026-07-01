@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steel Inquiry Form — Indiana Strip Steel</title>
+<style>
+  :root{
+    --navy:#1f3a6e;
+    --navy-dark:#16294f;
+    --steel-blue:#a9bdd9;
+    --panel-blue:#c6d3e6;
+    --border:#9fb0c9;
+    --text-dark:#1c2b45;
+    --text-muted:#5a6b85;
+    --red:#c0392b;
+    --green:#1e7d3c;
+    --bg:#eef1f6;
+    --white:#ffffff;
+  }
+  *{ box-sizing: border-box; }
+  body{ margin:0; font-family:'Segoe UI', Arial, sans-serif; background:var(--bg); color:var(--text-dark); }
+  header{ background:var(--navy); color:white; display:flex; align-items:center; gap:24px; padding:20px 40px; }
+  .logo-circle{ width:76px; height:76px; border-radius:50%; background:white; color:var(--navy); display:flex; align-items:center; justify-content:center; text-align:center; font-weight:700; font-size:12px; line-height:1.2; letter-spacing:0.5px; flex-shrink:0; }
+  header h1{ margin:0; font-size:26px; font-weight:400; }
+  header .home-link{ margin-top:6px; font-size:13px; color:var(--steel-blue); }
+  header .home-link a{ color:var(--steel-blue); text-decoration:none; }
+  header .home-link a:hover{ text-decoration:underline; }
+  nav{ background:var(--navy); display:flex; border-top:1px solid rgba(255,255,255,0.15); }
+  nav a{ color:var(--steel-blue); text-decoration:none; padding:14px 22px; font-size:14px; letter-spacing:0.3px; }
+  nav a.active{ background:#345189; color:white; font-weight:600; }
+  nav a:hover:not(.active){ background:#294370; }
+  main{ max-width:1140px; margin:30px auto 60px; padding:0 20px; }
+  .form-card{ background:var(--white); border-radius:4px; padding:36px 40px 40px; box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+  .form-title{ font-size:28px; color:var(--navy); font-weight:600; letter-spacing:0.5px; margin:0 0 10px; }
+  .form-title-rule{ height:2px; background:var(--navy); margin-bottom:30px; }
+  section.form-section{ margin-bottom:30px; }
+  .section-header{ background:var(--panel-blue); color:var(--navy-dark); font-weight:700; font-size:13px; letter-spacing:0.8px; padding:10px 16px; border-radius:2px; margin-bottom:20px; }
+  .field-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px 24px; }
+  .field-grid.cols-2{ grid-template-columns:repeat(2,1fr); }
+  .field label{ display:block; font-size:12px; font-weight:700; color:var(--navy-dark); letter-spacing:0.4px; margin-bottom:8px; }
+  .field label .req{ color:var(--red); }
+  .field input[type="text"], .field input[type="tel"], .field input[type="email"], .field input[type="number"]{ width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:3px; font-size:14px; color:var(--text-dark); background:#fbfcfe; }
+  .field input::placeholder{ color:#9aa6ba; }
+  .field input:focus{ outline:none; border-color:var(--navy); box-shadow:0 0 0 2px rgba(31,58,110,0.15); }
+  .subfield-label{ font-size:11px; font-weight:700; color:var(--text-muted); width:34px; display:flex; align-items:center; }
+  .subfield-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .subfield-row:last-child{ margin-bottom:0; }
+  .subfield-row input{ flex:1; }
+  .check-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px 24px; }
+  .checkbox-item, .radio-item{ display:flex; align-items:center; gap:10px; border:1px solid var(--border); border-radius:3px; padding:12px 14px; background:#fbfcfe; font-size:14px; }
+  .radio-item{ border:none; background:none; padding:4px 0; }
+  .checkbox-item input, .radio-item input{ width:16px; height:16px; accent-color:var(--navy); cursor:pointer; }
+  .checkbox-item label, .radio-item label{ margin:0; font-size:14px; font-weight:400; color:var(--text-dark); cursor:pointer; }
+  .radio-stack{ display:flex; flex-direction:column; gap:10px; }
+  .qty-row{ display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+  .qty-row input[type="number"]{ max-width:260px; }
+  .unit-options{ display:flex; gap:20px; }
+  .unit-options .radio-item{ padding:0; }
+  .ordering-grid{ display:grid; grid-template-columns:1fr 1fr; gap:30px; }
+  .form-actions{ display:flex; align-items:center; gap:20px; margin-top:36px; padding-top:24px; border-top:1px solid #e2e6ee; flex-wrap:wrap; }
+  .btn{ font-size:14px; font-weight:700; padding:12px 28px; border-radius:3px; cursor:pointer; border:1px solid transparent; letter-spacing:0.5px; }
+  .btn-submit{ background:var(--navy); color:white; }
+  .btn-submit:hover{ background:var(--navy-dark); }
+  .btn-submit:disabled{ background:#8fa2c2; cursor:not-allowed; }
+  .btn-clear{ background:white; color:var(--navy); border:1px solid var(--navy); }
+  .btn-clear:hover{ background:#f0f3f9; }
+  .required-note{ font-size:12px; color:var(--text-muted); }
+  .required-note .req{ color:var(--red); }
+  .status-msg{ display:none; font-size:14px; font-weight:600; padding:12px 16px; border-radius:3px; margin-top:18px; }
+  .status-msg.success{ display:block; background:#e6f4ea; color:var(--green); border:1px solid #b7e0c3; }
+  .status-msg.error{ display:block; background:#fbe9e7; color:var(--red); border:1px solid #f2c2ba; }
+  @media (max-width:800px){
+    .field-grid, .field-grid.cols-2, .check-grid, .ordering-grid{ grid-template-columns:1fr; }
+    header{ flex-direction:column; align-items:flex-start; gap:12px; }
+    nav{ flex-wrap:wrap; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-circle">INDIANA<br>STRIP STEEL</div>
+  <div>
+    <h1>Indiana Strip Steel &amp; Consulting Services, LLC.</h1>
+    <div class="home-link">🏠 <a href="#">HOME</a></div>
+  </div>
+</header>
+
+<nav>
+  <a href="#">Our History</a>
+  <a href="#">Our Capabilities</a>
+  <a href="#">Our Partners</a>
+  <a href="#">Contact Us</a>
+  <a href="#" class="active">Steel Inquiry</a>
+</nav>
+
+<main>
+  <div class="form-card">
+    <h2 class="form-title">STEEL INQUIRY FORM</h2>
+    <div class="form-title-rule"></div>
+
+    <form id="steelInquiryForm">
+
+      <section class="form-section">
+        <div class="section-header">CONTACT INFORMATION</div>
+        <div class="field-grid">
+          <div class="field">
+            <label>COMPANY NAME <span class="req">*</span></label>
+            <input type="text" id="companyName" placeholder="Your company" required>
+          </div>
+          <div class="field">
+            <label>YOUR NAME</label>
+            <input type="text" id="yourName" placeholder="Full name">
+          </div>
+          <div class="field">
+            <label>YOUR TITLE</label>
+            <input type="text" id="yourTitle" placeholder="e.g. Purchasing Manager">
+          </div>
+        </div>
+        <div class="field-grid cols-2" style="margin-top:22px;">
+          <div class="field">
+            <label>CONTACT PHONE <span class="req">*</span></label>
+            <div class="subfield-row">
+              <span class="subfield-label">MOB</span>
+              <input type="tel" id="mobile" placeholder="Mobile number" required>
+            </div>
+            <div class="subfield-row">
+              <span class="subfield-label">OFF</span>
+              <input type="tel" id="office" placeholder="Office number">
+            </div>
+          </div>
+          <div class="field">
+            <label>CONTACT EMAIL <span class="req">*</span></label>
+            <input type="email" id="contactEmail" placeholder="email@company.com" required>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-header">STEEL TYPE</div>
+        <div class="field" style="margin-bottom:16px;">
+          <label>TYPE OF STEEL — SELECT ALL THAT APPLY <span class="req">*</span></label>
+        </div>
+        <div class="check-grid">
+          <div class="checkbox-item"><input type="checkbox" id="hr" name="steelType" value="Hot Rolled"><label for="hr">Hot Rolled</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="hrp" name="steelType" value="Hot Rolled Pickled"><label for="hrp">Hot Rolled Pickled</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="hrpa" name="steelType" value="Hot Rolled Pickled & Annealed"><label for="hrpa">Hot Rolled Pickled &amp; Annealed</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="crar" name="steelType" value="Cold Rolled As Rolled"><label for="crar">Cold Rolled As Rolled</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="cra" name="steelType" value="Cold Rolled Annealed"><label for="cra">Cold Rolled Annealed</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="galv" name="steelType" value="Galvanized"><label for="galv">Galvanized</label></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-header">GRADE &amp; HARDNESS</div>
+        <div class="field-grid">
+          <div class="field"><label>CHEMISTRY</label><input type="text" id="chemistry" placeholder="e.g. 1018, 1045, 4140"></div>
+          <div class="field"><label>HARDNESS — MIN</label><input type="text" id="hardnessMin" placeholder="e.g. 60 HRB"></div>
+          <div class="field"><label>HARDNESS — MAX</label><input type="text" id="hardnessMax" placeholder="e.g. 85 HRB"></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-header">STEEL FORM</div>
+        <div class="field" style="margin-bottom:16px;"><label>SELECT FORM <span class="req">*</span></label></div>
+        <div class="check-grid" style="grid-template-columns: repeat(6,1fr);">
+          <div class="checkbox-item"><input type="checkbox" id="coil" name="steelForm" value="Coil"><label for="coil">Coil</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="sheet" name="steelForm" value="Sheet"><label for="sheet">Sheet</label></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-header">DIMENSIONS</div>
+        <div class="field-grid" style="margin-bottom:22px;">
+          <div class="field"><label>THICKNESS</label><input type="text" id="thickness" placeholder='e.g. 0.050"'></div>
+          <div class="field"><label>THICKNESS TOLERANCE</label><input type="text" id="thicknessTol" placeholder='e.g. ±0.002"'></div>
+          <div class="field"><label>WIDTH</label><input type="text" id="width" placeholder='e.g. 4.000"'></div>
+        </div>
+        <div class="field-grid">
+          <div class="field"><label>WIDTH TOLERANCE</label><input type="text" id="widthTol" placeholder='e.g. +0.000"/-0.005"'></div>
+          <div class="field"><label>ID — MIN</label><input type="text" id="idMin" placeholder='e.g. 16"'></div>
+          <div class="field"><label>ID — MAX</label><input type="text" id="idMax" placeholder='e.g. 20"'></div>
+        </div>
+        <div class="field-grid" style="margin-top:22px;">
+          <div class="field"><label>OD — MIN</label><input type="text" id="odMin" placeholder='e.g. 36"'></div>
+          <div class="field"><label>OD — MAX</label><input type="text" id="odMax" placeholder='e.g. 60"'></div>
+          <div></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="section-header">ORDERING &amp; DELIVERY</div>
+        <div class="ordering-grid">
+          <div class="field">
+            <label>ORDERING QUANTITY &amp; UNIT <span class="req">*</span></label>
+            <div class="qty-row">
+              <input type="number" id="quantity" placeholder="Enter quantity" required>
+              <div class="unit-options">
+                <div class="radio-item"><input type="radio" id="lbs" name="unit" value="LBS"><label for="lbs">LBS</label></div>
+                <div class="radio-item"><input type="radio" id="kgs" name="unit" value="KGS"><label for="kgs">KGS</label></div>
+                <div class="radio-item"><input type="radio" id="tons" name="unit" value="TONS"><label for="tons">TONS</label></div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>DELIVERY <span class="req">*</span></label>
+            <div class="radio-stack">
+              <div class="radio-item"><input type="radio" id="d1" name="delivery" value="Immediate"><label for="d1">Immediate</label></div>
+              <div class="radio-item"><input type="radio" id="d2" name="delivery" value="2 Weeks or Better"><label for="d2">2 Weeks or Better</label></div>
+              <div class="radio-item"><input type="radio" id="d3" name="delivery" value="4 Weeks or Better"><label for="d3">4 Weeks or Better</label></div>
+              <div class="radio-item"><input type="radio" id="d4" name="delivery" value="6 Weeks or Better"><label for="d4">6 Weeks or Better</label></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-submit" id="submitBtn">SUBMIT INQUIRY</button>
+        <button type="reset" class="btn btn-clear">Clear Form</button>
+        <span class="required-note">Fields marked <span class="req">*</span> are required</span>
+      </div>
+
+      <div class="status-msg" id="statusMsg"></div>
+
+    </form>
+  </div>
+</main>
+
+<script>
+  const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+  const form = document.getElementById('steelInquiryForm');
+  const statusMsg = document.getElementById('statusMsg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function getCheckedValues(name){
+    return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(el => el.value);
+  }
+  function getRadioValue(name){
+    const el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : "";
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    statusMsg.className = 'status-msg';
+    statusMsg.textContent = '';
+
+    const steelTypes = getCheckedValues('steelType');
+    const steelForms = getCheckedValues('steelForm');
+
+    if (steelTypes.length === 0){
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = 'Please select at least one Type of Steel.';
+      return;
+    }
+    if (steelForms.length === 0){
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = 'Please select a Steel Form (Coil or Sheet).';
+      return;
+    }
+
+    const payload = {
+      companyName: document.getElementById('companyName').value,
+      yourName: document.getElementById('yourName').value,
+      yourTitle: document.getElementById('yourTitle').value,
+      mobile: document.getElementById('mobile').value,
+      office: document.getElementById('office').value,
+      contactEmail: document.getElementById('contactEmail').value,
+      steelType: steelTypes.join(', '),
+      chemistry: document.getElementById('chemistry').value,
+      hardnessMin: document.getElementById('hardnessMin').value,
+      hardnessMax: document.getElementById('hardnessMax').value,
+      steelForm: steelForms.join(', '),
+      thickness: document.getElementById('thickness').value,
+      thicknessTol: document.getElementById('thicknessTol').value,
+      width: document.getElementById('width').value,
+      widthTol: document.getElementById('widthTol').value,
+      idMin: document.getElementById('idMin').value,
+      idMax: document.getElementById('idMax').value,
+      odMin: document.getElementById('odMin').value,
+      odMax: document.getElementById('odMax').value,
+      quantity: document.getElementById('quantity').value,
+      unit: getRadioValue('unit'),
+      delivery: getRadioValue('delivery'),
+      submittedAt: new Date().toISOString()
+    };
+
+    if (SCRIPT_URL.indexOf('PASTE_YOUR') !== -1){
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = 'Backend not connected yet — set SCRIPT_URL in the code to your Apps Script Web App URL.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'SUBMITTING...';
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(){
+      statusMsg.className = 'status-msg success';
+      statusMsg.textContent = 'Thank you — your inquiry has been submitted. A confirmation email is on its way to ' + payload.contactEmail + '.';
+      form.reset();
+    })
+    .catch(function(err){
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = 'Something went wrong submitting the form. Please try again or contact us directly.';
+      console.error(err);
+    })
+    .finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'SUBMIT INQUIRY';
+    });
+  });
+</script>
+
+</body>
+</html>
